@@ -63,14 +63,13 @@ type aria2Bak struct {
 }
 
 type main struct {
-	SwanApiUrl               string        `toml:"api_url"`
-	SwanApiKey               string        `toml:"api_key"`
-	SwanAccessToken          string        `toml:"access_token"`
-	SwanApiHeartbeatInterval time.Duration `toml:"api_heartbeat_interval"`
-	MinerFid                 string        `toml:"miner_fid"`
-	LotusImportInterval      time.Duration `toml:"import_interval"`
-	LotusScanInterval        time.Duration `toml:"scan_interval"`
-	MarketVersion            string        `toml:"market_version"`
+	SwanApiUrl          string        `toml:"api_url"`
+	SwanApiKey          string        `toml:"api_key"`
+	SwanAccessToken     string        `toml:"access_token"`
+	MinerFid            string        `toml:"miner_fid"`
+	LotusImportInterval time.Duration `toml:"import_interval"`
+	LotusScanInterval   time.Duration `toml:"scan_interval"`
+	MarketVersion       string        `toml:"market_version"`
 }
 
 type bid struct {
@@ -187,7 +186,6 @@ func requiredFieldsAreGiven(metaData toml.MetaData) bool {
 		{"main", "scan_interval"},
 		{"main", "api_key"},
 		{"main", "access_token"},
-		{"main", "api_heartbeat_interval"},
 		{"main", "market_version"},
 
 		{"bid", "bid_mode"},
@@ -272,7 +270,6 @@ func assignConfig(config *Configuration, configBak *ConfigurationBak) {
 	config.Main.SwanApiUrl = configBak.Main.SwanApiUrl
 	config.Main.SwanApiKey = configBak.Main.SwanApiKey
 	config.Main.SwanAccessToken = configBak.Main.SwanAccessToken
-	config.Main.SwanApiHeartbeatInterval = configBak.Main.SwanApiHeartbeatInterval
 	config.Main.MinerFid = configBak.Main.MinerFid
 	config.Main.LotusImportInterval = configBak.Main.LotusImportInterval
 	config.Main.LotusScanInterval = configBak.Main.LotusScanInterval

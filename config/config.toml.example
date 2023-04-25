@@ -26,7 +26,6 @@ access_token = ""                               # Your access token. Acquire fro
 miner_fid = "f0xxxx"                            # Your Filecoin MinerID, this miner must be added to the Swan Storage providers list by Swan Platform -> "My Profile" -> "As Storage Provider" -> "Manage" -> "Add"
 import_interval = 600                           # 600 seconds or 10 minutes. Importing interval between each deal.
 scan_interval = 600                             # 600 seconds or 10 minutes. Time interval to scan all the ongoing deals and update status on the Swan platform.
-api_heartbeat_interval = 300                    # 300 seconds or 5 minutes. Time interval to send a heartbeat.
 
 [bid]
 bid_mode = 1                  					# 0: manual, 1: auto

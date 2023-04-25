@@ -1,23 +1,19 @@
 package service
 
 import (
-	"swan-provider/config"
-	"time"
-
 	"github.com/filswan/go-swan-lib/client/swan"
 	libmodel "github.com/filswan/go-swan-lib/model"
+	"swan-provider/config"
 )
 
 type SwanService struct {
-	MinerFid             string
-	ApiHeartbeatInterval time.Duration
+	MinerFid string
 }
 
 func GetSwanService() *SwanService {
 	mainConf := config.GetConfig().Main
 	swanService := &SwanService{
-		MinerFid:             mainConf.MinerFid,
-		ApiHeartbeatInterval: mainConf.SwanApiHeartbeatInterval * time.Second,
+		MinerFid: mainConf.MinerFid,
 	}
 
 	return swanService
@@ -34,6 +30,7 @@ func (swanService *SwanService) UpdateBidConf(swanClient *swan.SwanClient) {
 		ExpectedSealingTime: config.GetConfig().Bid.ExpectedSealingTime,
 		StartEpoch:          config.GetConfig().Bid.StartEpoch,
 		AutoBidDealPerDay:   config.GetConfig().Bid.AutoBidDealPerDay,
+		MarketVersion:       config.GetConfig().Main.MarketVersion,
 	}
 
 	swanClient.UpdateMinerBidConf(swanService.MinerFid, *confMiner)
