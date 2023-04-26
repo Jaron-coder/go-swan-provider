@@ -475,6 +475,8 @@ func startBoost(repo, logFile, fullNodeApi string) (int, error) {
 		logs.GetLogger().Error(err)
 		return 0, errors.Wrap(err, "start boostd process failed")
 	}
+	logs.GetLogger().Warn("wait for the boost startup to be finished...")
+	time.Sleep(10 * time.Second)
 	return boostProcess.Pid, nil
 }
 
