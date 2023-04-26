@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/fatih/color"
+	"github.com/filswan/go-swan-lib/client/boost"
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"log"
@@ -223,7 +224,24 @@ func checkLotusConfig() {
 			logs.GetLogger().Fatal(err)
 			return
 		}
-		logs.GetLogger().Infof("start boostd successful, pid: %d", boostPid)
+		boostToken, err := GetBoostToken(market.Repo)
+		boostClient, closer, err := boost.NewClient(boostToken, rpcApi)
+		if err != nil {
+			logs.GetLogger().Error(err)
+			return
+		}
+		defer closer()
+
+		for {
+			if _, err = boostClient.GetDealsConsiderOfflineStorageDeals(context.TODO()); err == nil {
+				break
+			} else {
+				logs.GetLogger().Errorf("boost started failed, error: %v", err)
+			}
+			time.Sleep(1 * time.Second)
+		}
+
+		logs.GetLogger().Infof("start boostd rpc service successful, pid: %d", boostPid)
 		BoostPid = boostPid
 	}
 
