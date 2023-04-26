@@ -50,23 +50,7 @@ sudo apt install aria2
 export SWAN_PATH="/data/.swan"
 ```
 
-### 选项:one: **预构建包**: 参照 [release assets](https://github.com/filswan/go-swan-provider/releases)
-####  构建指南
-```shell
-wget --no-check-certificate https://raw.githubusercontent.com/filswan/go-swan-provider/release-2.2.0-rc1/install.sh
-chmod +x ./install.sh
-./install.sh
-```
-#### 配置和运行
-- 编辑配置文件 **~/.swan/provider/config.toml**, 参考 [此处](#配置并运行)
-- 在后台运行 `swan-provider`
-
-```
-ulimit -SHn 1048576
-export SWAN_PATH="/data/.swan"
-nohup swan-provider-2.2.0-rc1-linux-amd64 daemon >> swan-provider.log 2>&1 & 
-```
-### 选项:two: 从源代码构建
+### 从源代码构建
 构建 `swan-provider` 需要安装以下依赖包:
 ```
 curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
@@ -77,9 +61,9 @@ sudo apt-get install -y nodejs
 ```
 sudo apt install mesa-opencl-icd ocl-icd-opencl-dev gcc git bzr jq pkg-config curl clang build-essential hwloc libhwloc-dev wget -y && sudo apt upgrade -y
 ```
-- Go(需要 **1.18.1+**)
+- Go(需要 **1.19.5+**)
 ```
-wget -c https://golang.org/dl/go1.18.1.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
+wget -c https://golang.org/dl/go1.19.5.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
 ```
 ```
 echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc && source ~/.bashrc
@@ -91,9 +75,8 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 ####  构建指南
 ```shell
-git clone https://github.com/filswan/go-swan-provider.git
+git clone https://github.com/FogMeta/go-swan-provider.git
 cd go-swan-provider
-git checkout release-2.2.0-rc1
 ./build_from_source.sh
 ```
 
@@ -109,6 +92,8 @@ client_api_url = "http://[ip]:[port]/rpc/v0"    # lotus 客户端 web API 的 Ur
 client_api_token = ""                           # lotus 客户端 web API 的 token (lotus auth api-info --perm=admin)
 market_api_url = "http://[ip]:[port]/rpc/v0"   	# lotus market web API 的 Url，通常 [port] 为 2345，当 market 和 miner 没有分离的时候, 它也是 miner web API 的 URL
 market_access_token = ""                        # lotus market web API 的 token，当 market 和 miner 没有分离的时候, 它也是 miner web API 的 token
+max_sealing = 5                                 # lotus-miner的最大封装数量限制
+max_addPiece = 2                                # 并发做addPiece任务的数量限制
 
 [aria2]
 aria2_download_dir = "%%ARIA2_DOWNLOAD_DIR%%"   # 离线订单文件的下载目录
@@ -162,7 +147,7 @@ swan-provider daemon
   ```
   kill -9 $(ps -ef | grep -E 'swan-provider|boostd' | grep -v grep | awk '{print$2}' )
   ```
-  (2) 编辑 boost 的配置文件`$SWAN_PATH/boost/config.toml`：
+  (2) 编辑 boost 的配置文件`$SWAN_PATH/provider/boost/config.toml`：
   ```
   [Libp2p]
       ListenAddresses = ["/ip4/0.0.0.0/tcp/24001", "/ip6/::/tcp/24001"]   # Binding address for the libp2p host
